@@ -129,7 +129,8 @@ export default function SignUpPage() {
         );
 
         if (emailExists) {
-          alert("Email already exists. Please use a different email.");
+          showNotification("Email already exists. Please use a different email.", "error", [" #f00a0aff", "#F8FFAE"]);
+          // alert("Email already exists. Please use a different email.");
           return;
         }
 
@@ -145,8 +146,6 @@ export default function SignUpPage() {
         existingUsers.push(newUser);
         localStorage.setItem("users", JSON.stringify(existingUsers));
 
-        // Store current user session
-        localStorage.setItem("currentUser", JSON.stringify(newUser));
 
         // Reset form
         setFormData({
