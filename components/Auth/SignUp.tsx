@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, FormEvent, ChangeEvent, use } from "react";
+import { useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import styles from "@/app/page.module.css";
@@ -33,13 +33,13 @@ export default function SignUpPage() {
     password: "",
     agreeToTerms: false,
   });
-  
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [, forceUpdate] = useState<number>(0);
   const router = useRouter();
   const { addToast } = useToaster();
 
-  const showNotification = (message: string,  types: ToastType, gradient?: any) => {
+  const showNotification = (message: string, types: ToastType, gradient?: any) => {
     addToast({
       message: message,
       type: types,
@@ -53,12 +53,23 @@ export default function SignUpPage() {
         borderRadius: "8px",
         padding: "16px",
         border: "1px solid rgba(255, 255, 255, 0.1)",
-        iconColor:"#fff",
+        iconColor: "#fff",
         textColor: "#fff",
       },
     });
   };
-  
+
+  useEffect(() => {
+    let usersString = null;
+    if (typeof window !== "undefined") {
+      usersString = localStorage.getItem("currentUser");
+    }
+    if (usersString) {
+      router.push("/dashboard")
+      return
+    }
+  }, [])
+
   // Initialize validator
   const validator = useRef(
     new SimpleReactValidator({
@@ -108,15 +119,15 @@ export default function SignUpPage() {
       try {
         // Get existing users or initialize empty array
         const existingUsersString = localStorage.getItem("users");
-        const existingUsers: User[] = existingUsersString 
-          ? JSON.parse(existingUsersString) 
+        const existingUsers: User[] = existingUsersString
+          ? JSON.parse(existingUsersString)
           : [];
-        
+
         // Check if email already exists
         const emailExists = existingUsers.some(
           (user: User) => user.email === formData.email
         );
-        
+
         if (emailExists) {
           alert("Email already exists. Please use a different email.");
           return;
@@ -133,10 +144,10 @@ export default function SignUpPage() {
 
         existingUsers.push(newUser);
         localStorage.setItem("users", JSON.stringify(existingUsers));
-        
+
         // Store current user session
         localStorage.setItem("currentUser", JSON.stringify(newUser));
-        
+
         // Reset form
         setFormData({
           fullname: "",
@@ -144,13 +155,13 @@ export default function SignUpPage() {
           password: "",
           agreeToTerms: false,
         });
-        
+
         validator.current.hideMessages();
         showNotification("Sign up successful! Redirecting...", "success", [" #01846aff", "#606903ff"]);
         router.push("/")
         // Redirect to dashboard or login
         // window.location.href = "/dashboard";
-        
+
       } catch (error) {
         showNotification("An error occurred. Please try again.", "error", [" #f00a0aff", "#F8FFAE"]);
         console.error("Error saving to localStorage:", error);

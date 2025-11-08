@@ -8,6 +8,12 @@ import Image from "next/image";
 
 export default function Header() {
   const pathName = usePathname();
+  
+  let usersString = null;
+  if (typeof window !== "undefined") {
+    usersString = localStorage.getItem("currentUser");
+  }
+
   return (
     <>
       <header className={styles.topHeader}>
@@ -58,10 +64,10 @@ export default function Header() {
               <input type="text" placeholder="Search..." className={styles.searchInput} />
             </div>
             <div className={styles.authButtons}>
-              <Link href="/sign-up" className={`${styles.button} ${styles.buttonGhost}`}>
+              <Link href={usersString ? "#":"/sign-up"} className={`${styles.button} ${styles.buttonGhost}`}>
                 Sign Up
               </Link>
-              <Link href="/" className={`${styles.button} ${styles.buttonPrimary}`}>
+              <Link href={usersString ? "#":"/"} className={`${styles.button} ${styles.buttonPrimary}`}>
                 Login
               </Link>
             </div>

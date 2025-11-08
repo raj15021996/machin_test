@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, FormEvent, ChangeEvent } from "react";
+import { useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import styles from "@/app/page.module.css";
@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   const { addToast } = useToaster();
 
-  const showNotification = (message: string,  types: ToastType, gradient?: any) => {
+  const showNotification = (message: string, types: ToastType, gradient?: any) => {
     addToast({
       message: message,
       type: types,
@@ -53,13 +53,22 @@ export default function LoginPage() {
         borderRadius: "8px",
         padding: "16px",
         border: "1px solid rgba(255, 255, 255, 0.1)",
-        iconColor:"#fff",
+        iconColor: "#fff",
         textColor: "#fff",
       },
     });
   };
-  
 
+  useEffect(() => {
+    let usersString = null;
+    if (typeof window !== "undefined") {
+      usersString = localStorage.getItem("currentUser");
+    }
+    if (usersString) {
+      router.push("/dashboard")
+      return
+    }
+  }, [])
   // Initialize validator
   const validator = useRef(
     new SimpleReactValidator({
@@ -91,7 +100,10 @@ export default function LoginPage() {
   // Get users from localStorage
   const getUsers = (): User[] => {
     try {
-      const usersString = localStorage.getItem("users");
+      let usersString = null;
+      if (typeof window !== "undefined") {
+        usersString = localStorage.getItem("users");
+      }
       return usersString ? JSON.parse(usersString) : [];
     } catch (error) {
       showNotification("Error reading users from localStorage", "error", [" #f00a0aff", "#F8FFAE"]);
@@ -112,7 +124,7 @@ export default function LoginPage() {
   // Set current user in localStorage
   const setCurrentUser = (user: User): void => {
     localStorage.setItem("currentUser", JSON.stringify(user));
-    
+
     // If remember me is checked, store email
     if (formData.rememberMe) {
       localStorage.setItem("rememberedEmail", user.email);
@@ -134,16 +146,16 @@ export default function LoginPage() {
         // Login successful
         setCurrentUser(user);
         showNotification(`Welcome back, ${user.fullname}!`, "success", [" #00ff00ff", "#F8FFAE"]);
-        
+
         // Reset form
         setFormData({
           email: "",
           password: "",
           rememberMe: false,
         });
-        
+
         validator.current.hideMessages();
-        
+
         // Redirect to dashboard
         router.push("/dashboard");
       } else {
@@ -167,7 +179,10 @@ export default function LoginPage() {
 
   // Check for remembered email on component mount
   useState(() => {
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    let rememberedEmail = null;
+    if (typeof window !== "undefined") {
+      rememberedEmail = localStorage.getItem("rememberedEmail");
+    }
     if (rememberedEmail) {
       setFormData((prev) => ({
         ...prev,

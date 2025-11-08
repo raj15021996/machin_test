@@ -1,16 +1,7 @@
-import React, { useState } from "react";
-import {
-  CreditCard,
-  FileText,
-  BookOpen,
-  XCircle,
-  Award,
-  Bell,
-  Calendar,
-  LogOut,
-} from "lucide-react";
+"use client";
+import React, { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
-import  Image from "next/image";
+import Image from "next/image";
 import GraduationCap from "@/assets/Icone/Graduation_Cap.svg";
 import Dashboard from '@/assets/Icone/dashboard.svg'
 import Case from '@/assets/Icone/cash.svg'
@@ -42,7 +33,7 @@ function Sidebar() {
     localStorage.removeItem("currentUser");
     router.push("/");
   }
-  
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.sidebarTop}>
@@ -56,9 +47,8 @@ function Sidebar() {
               <button
                 key={item.name}
                 onClick={() => setActiveNav(item.name)}
-                className={`${styles.sidebarItem} ${
-                  activeNav === item.name ? styles.sidebarItemActive : ""
-                }`}
+                className={`${styles.sidebarItem} ${activeNav === item.name ? styles.sidebarItemActive : ""
+                  }`}
               >
                 <Image src={item.icon} alt={item.name} />
                 <span>{item.name}</span>
@@ -68,10 +58,10 @@ function Sidebar() {
         </nav>
       </div>
       <div>
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        <Image src={logout} alt="Logout" />
-        <span>Logout</span>
-      </button>
+        <button className={styles.logoutButton} onClick={handleLogout}>
+          <Image src={logout} alt="Logout" />
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
   );
