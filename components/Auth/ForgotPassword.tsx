@@ -43,10 +43,18 @@ export default function ForgotPasswordPage() {
 
                   {/* Terms Agreement */}
                   <div className={styles.termsAgreement}>
-                     <input type="checkbox" id="remember" className={styles.checkbox} />
-                    <p>
-                      I agree with <Link href="#">Terms of Use</Link> and <Link href="#">Privacy Policy</Link>
-                    </p>
+                    <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <input
+                        type="checkbox"
+                        id="remember"
+                        style={{ width: "auto", margin: 0 }}
+
+                      />
+                      <span style={{ fontSize: "18px" }}>
+                        I agree with <Link href="#">Terms of Use</Link> and{" "}
+                        <Link href="#">Privacy Policy</Link>
+                      </span>
+                    </label>
                   </div>
 
                   {/* Reset Password Button */}

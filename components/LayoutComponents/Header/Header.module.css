@@ -16,6 +16,8 @@
   justify-content: space-between;
   align-items: center;
   font-family: 'Poppins', sans-serif;
+  width: 100%;
+  position: relative;
 }
 
 .companyName {
@@ -23,14 +25,17 @@
   font-weight: 500;
   font-size: 18px;
   line-height: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .socialLinks {
   display: flex;
   gap: 1rem;
   align-items: center;
-  position: relative;
-  right: 10%;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .socialLinks a {
@@ -163,11 +168,14 @@
   padding: 0.625rem 1rem 0.625rem 2.75rem;
   font-size: 0.9rem;
   outline: none;
+  border: none;
+  background: transparent;
   transition: border-color 0.2s;
+  border-radius: 15.86px;
 }
 
 .searchInput:focus {
-  border-color: #5dd9b3;
+  outline: none;
 }
 
 .authButtons {
@@ -204,50 +212,481 @@
   opacity: 0.9;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .searchBar {
-    width: 250px;
-  }
+/* Mobile Menu Button */
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #262626;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
 
-  .navLinks {
-    gap: 1.5rem;
-  }
+.mobileMenuButton:hover {
+  opacity: 0.7;
+}
+
+/* Mobile Menu Overlay */
+.mobileMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  display: none;
 }
 
 @media (max-width: 768px) {
-  .navContent {
-    padding: 0 1rem;
+  .mobileMenuOverlay {
+    display: block;
   }
-  
-  .headerContent {
-    padding: 0 1rem;
+}
+
+.mobileMenuOverlay.mobileMenuOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 85%;
+  max-width: 400px;
+  height: 100%;
+  background: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+}
+
+.mobileMenuOverlay.mobileMenuOpen .mobileMenu {
+  transform: translateX(0);
+}
+
+.mobileMenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mobileLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileMenuClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #262626;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileMenuClose:hover {
+  opacity: 0.7;
+}
+
+.mobileNavLinks {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.mobileNavLink {
+  padding: 1rem 1.5rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #262626;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.mobileNavLink:hover {
+  background: #f3f4f6;
+  color: #5dd9b3;
+  border-left-color: #43C6AC;
+}
+
+.mobileNavLink.mobileActive {
+  background: linear-gradient(90deg, rgba(67, 198, 172, 0.1) 0%, rgba(248, 255, 174, 0.1) 100%);
+  color: #151515;
+  border-left-color: #43C6AC;
+  font-weight: 500;
+}
+
+.mobileSearch {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mobileSearchBar {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 45px;
+  min-height: 45px;
+  border-radius: 12px;
+  border: 1px solid #43C6AC;
+  box-shadow: 0px 0px 20px 0px #00000008;
+  box-sizing: border-box;
+}
+
+.mobileSearchBar .searchInput {
+  border-radius: 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.625rem 1rem 0.625rem 2.75rem;
+  font-size: 0.9rem;
+}
+
+.mobileSearchBar .searchIcon {
+  left: 1rem;
+  width: 18px;
+  height: 18px;
+}
+
+.mobileAuthButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  margin-top: auto;
+}
+
+.mobileAuthButtons .button {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .navContent {
+    padding: 0 1.5rem;
+    flex-wrap: nowrap;
+  }
+
+  .navLeft {
+    gap: 1.5rem;
+    flex-shrink: 0;
   }
 
   .navLinks {
-    display: none;
+    gap: 1rem;
+    font-size: 16px;
+    flex-wrap: wrap;
+  }
+
+  .navLinks a {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .navLinks .active {
+    width: auto;
+    min-width: 80px;
+    height: 45px;
+    padding: 0.5rem 1rem;
   }
 
   .searchBar {
-    width: 200px;
+    max-width: 400px;
+    min-width: 250px;
+    width: auto;
+    height: 45px;
+    flex: 0 1 auto;
+  }
+
+  .searchInput {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .searchIcon {
+    width: 16px;
+    height: 16px;
+    left: 0.75rem;
   }
 
   .searchAndAuth {
     gap: 1rem;
   }
 
+  .authButtons {
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .logoInner {
+    width: 40px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topHeader {
+    height: auto;
+    min-height: 50px;
+    padding: 0.75rem 0;
+  }
+
+  .headerContent {
+    padding: 0 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: space-between;
+  }
+
+  .companyName {
+    font-size: 14px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .socialLinks {
+    gap: 0.75rem;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .socialLinks svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .navContent {
+    padding: 0 1rem;
+    height: 65px;
+  }
+
+  .navLinks {
+    display: none;
+  }
+
+  .searchBar {
+    max-width: 200px;
+    min-width: 150px;
+    width: auto;
+    height: 45px;
+    flex: 0 1 auto;
+  }
+
+  .searchInput {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .searchIcon {
+    width: 16px;
+    height: 16px;
+    left: 0.75rem;
+  }
+
+  .searchAndAuth {
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  .authButtons {
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
   .button {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
+
+  .mobileMenuButton {
+    display: flex;
+  }
+
+  .logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .logoInner {
+    width: 38px;
+    height: 20px;
+  }
+
+  .mobileSearchBar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .mobileSearchBar .searchInput {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.625rem 1rem 0.625rem 2.75rem;
+  }
 }
 
 @media (max-width: 640px) {
+  .topHeader {
+    padding: 0.5rem 0;
+  }
+
+  .headerContent {
+    padding: 0 0.75rem;
+    justify-content: space-between;
+  }
+
+  .companyName {
+    font-size: 12px;
+    line-height: 1.2;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .socialLinks {
+    gap: 0.5rem;
+  }
+
+  .socialLinks a {
+    width: 18px;
+    height: 18px;
+  }
+
+  .socialLinks svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .navContent {
+    padding: 0 0.75rem;
+    height: 60px;
+  }
+
   .searchBar {
     display: none;
   }
 
+  .authButtons {
+    display: none;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logoInner {
+    width: 34px;
+    height: 18px;
+  }
+
+  .mobileMenu {
+    width: 90%;
+  }
+
+  .mobileSearch {
+    padding: 1rem;
+  }
+
+  .mobileSearchBar {
+    width: 100%;
+    max-width: 100%;
+    height: 45px;
+  }
+
+  .mobileSearchBar .searchInput {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.625rem 0.875rem 0.625rem 2.5rem;
+    font-size: 0.85rem;
+  }
+
+  .mobileSearchBar .searchIcon {
+    left: 0.875rem;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 480px) {
   .companyName {
-    font-size: 0.75rem;
+    font-size: 11px;
+  }
+
+  .navContent {
+    height: 55px;
+  }
+
+  .logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mobileMenu {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .mobileSearch {
+    padding: 0.875rem;
+  }
+
+  .mobileSearchBar {
+    width: 100%;
+    max-width: 100%;
+    height: 42px;
+  }
+
+  .mobileSearchBar .searchInput {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+    font-size: 0.8rem;
+  }
+
+  .mobileSearchBar .searchIcon {
+    left: 0.75rem;
+    width: 15px;
+    height: 15px;
   }
 }

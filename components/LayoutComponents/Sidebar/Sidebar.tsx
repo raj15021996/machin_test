@@ -50,18 +50,18 @@ function Sidebar() {
                 className={`${styles.sidebarItem} ${activeNav === item.name ? styles.sidebarItemActive : ""
                   }`}
               >
-                <Image src={item.icon} alt={item.name} />
+                <Image src={item.icon} alt={item.name} width={20} height={20} />
                 <span>{item.name}</span>
               </button>
             );
           })}
         </nav>
-      </div>
-      <div>
-        <button className={styles.logoutButton} onClick={handleLogout}>
-          <Image src={logout} alt="Logout" />
-          <span>Logout</span>
-        </button>
+        <div className={styles.logoutWrapper}>
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            <Image src={logout} alt="Logout" width={20} height={20} />
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
     </aside>
   );

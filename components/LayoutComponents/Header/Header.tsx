@@ -1,25 +1,58 @@
 'use client'
 import Link from "next/link"
-import { Search } from "lucide-react"
+import { Search, Menu, X } from "lucide-react"
 import styles from "./Header.module.css"
 import { usePathname } from "next/navigation";
 import GroupIcon from '@/assets/Icone/Group.png'
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const pathName = usePathname();
-  
-  let usersString = null;
-  if (typeof window !== "undefined") {
-    usersString = localStorage.getItem("currentUser");
-  }
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [usersString, setUsersString] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setUsersString(localStorage.getItem("currentUser"));
+      
+      // Check if device is mobile/tablet
+      const checkIsMobile = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+      
+      checkIsMobile();
+      window.addEventListener('resize', checkIsMobile);
+      
+      return () => window.removeEventListener('resize', checkIsMobile);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <>
       <header className={styles.topHeader}>
         <div className={styles.headerContent}>
           <p className={styles.companyName}>Open All Tech India Pvt. Ltd.</p>
-        </div>
           <div className={styles.socialLinks}>
             <a href="#" aria-label="Facebook">
               <svg viewBox="0 0 24 24" fill="currentColor">
@@ -37,6 +70,7 @@ export default function Header() {
               </svg>
             </a>
           </div>
+        </div>
       </header>
 
       <nav className={styles.nav}>
@@ -48,13 +82,13 @@ export default function Header() {
               </div>
             </Link>
             <div className={styles.navLinks}>
-              <Link href="/dashboard" className={pathName === "/dashboard"? styles.active:''}>
+              <Link href="/dashboard" className={pathName === "/dashboard"? styles.active:''} onClick={closeMobileMenu}>
                 Home
               </Link>
-              <Link href="/courses">Courses</Link>
-              <Link href="/about">About Us</Link>
-              <Link href="/pricing">Pricing</Link>
-              <Link href="/contact">Contact</Link>
+              <Link href="/courses" onClick={closeMobileMenu}>Courses</Link>
+              <Link href="/about" onClick={closeMobileMenu}>About Us</Link>
+              <Link href="/pricing" onClick={closeMobileMenu}>Pricing</Link>
+              <Link href="/contact" onClick={closeMobileMenu}>Contact</Link>
             </div>
           </div>
 
@@ -71,9 +105,63 @@ export default function Header() {
                 Login
               </Link>
             </div>
+            <button 
+              className={styles.mobileMenuButton}
+              onClick={toggleMobileMenu}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay - Only render on mobile/tablet */}
+      {isMobile && (
+        <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`} onClick={closeMobileMenu}>
+          <div className={styles.mobileMenu} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.mobileMenuHeader}>
+              <Link href="/" className={styles.mobileLogo} onClick={closeMobileMenu}>
+                <Image src={GroupIcon} alt="Logo" width={40} height={40} />
+              </Link>
+              <button 
+                className={styles.mobileMenuClose}
+                onClick={closeMobileMenu}
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <div className={styles.mobileNavLinks}>
+              <Link 
+                href="/dashboard" 
+                className={pathName === "/dashboard" ? `${styles.mobileNavLink} ${styles.mobileActive}` : styles.mobileNavLink}
+                onClick={closeMobileMenu}
+              >
+                Home
+              </Link>
+              <Link href="/courses" className={styles.mobileNavLink} onClick={closeMobileMenu}>Courses</Link>
+              <Link href="/about" className={styles.mobileNavLink} onClick={closeMobileMenu}>About Us</Link>
+              <Link href="/pricing" className={styles.mobileNavLink} onClick={closeMobileMenu}>Pricing</Link>
+              <Link href="/contact" className={styles.mobileNavLink} onClick={closeMobileMenu}>Contact</Link>
+            </div>
+            <div className={styles.mobileSearch}>
+              <div className={styles.mobileSearchBar}>
+                <Search className={styles.searchIcon} />
+                <input type="text" placeholder="Search..." className={styles.searchInput} />
+              </div>
+            </div>
+            <div className={styles.mobileAuthButtons}>
+              <Link href={usersString ? "#":"/sign-up"} className={`${styles.button} ${styles.buttonGhost}`} onClick={closeMobileMenu}>
+                Sign Up
+              </Link>
+              <Link href={usersString ? "#":"/"} className={`${styles.button} ${styles.buttonPrimary}`} onClick={closeMobileMenu}>
+                Login
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
