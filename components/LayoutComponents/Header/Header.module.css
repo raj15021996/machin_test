@@ -1,0 +1,253 @@
+/* Top Header Bar */
+.topHeader {
+  display: flex;
+  position: relative;
+  background: linear-gradient(90deg, #43C6AC 0%, #F8FFAE 100%);
+  padding: 0.5rem 0;
+  width: 100%;
+  height: 50px;
+}
+
+.headerContent {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.companyName {
+  margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  right: 10%;
+}
+
+.socialLinks a {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f2937;
+  transition: opacity 0.2s;
+}
+
+.socialLinks a:hover {
+  opacity: 0.7;
+}
+
+.socialLinks svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Navigation Bar */
+.nav {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navContent {
+  max-width: 1592px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 18px;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.logo {
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(180deg, #43C6AC -24.55%, #F8FFAE 110%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logoInner {
+  width: 46px;
+  height: 25px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navLinks a {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color:#262626;
+  text-decoration: none;
+  transition: color 0.2s;
+  text-align: center;
+}
+.navLinks .active {
+  background: linear-gradient(180deg, #43C6AC -24.55%, #F8FFAE 110%);
+  width: 100px;
+  height: 55px;
+  color: #151515;
+  opacity: 1;
+  border-radius: 8px;
+  gap: 10px;
+  padding-top: 14px;
+  padding-right: 24px;
+  padding-bottom: 14px;
+  padding-left: 24px;
+}
+
+.navLinks .active:hover {
+  color: #151515;
+}
+.navLinks a:hover {
+  color: #5dd9b3;
+}
+
+.searchAndAuth {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.searchBar {
+  position: relative;
+  width: 640px;
+  height: 50px;
+  opacity: 1;
+  border-radius: 15.86px;
+  border: 1px solid #43C6AC;
+  box-shadow: 0px 0px 63.44px 0px #00000012;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  width: 18px;
+  height: 18px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem 1rem 0.625rem 2.75rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  border-color: #5dd9b3;
+}
+
+.authButtons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.button {
+  padding: 0.625rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonGhost {
+  color:#262626;
+  background: transparent;
+}
+
+.buttonGhost:hover {
+  background: #f3f4f6;
+}
+
+.buttonPrimary {
+  background: linear-gradient(180deg, #43C6AC -24.55%, #F8FFAE 110%);
+  color: #000;
+}
+
+.buttonPrimary:hover {
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .searchBar {
+    width: 250px;
+  }
+
+  .navLinks {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navContent {
+    padding: 0 1rem;
+  }
+  
+  .headerContent {
+    padding: 0 1rem;
+  }
+
+  .navLinks {
+    display: none;
+  }
+
+  .searchBar {
+    width: 200px;
+  }
+
+  .searchAndAuth {
+    gap: 1rem;
+  }
+
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .searchBar {
+    display: none;
+  }
+
+  .companyName {
+    font-size: 0.75rem;
+  }
+}
