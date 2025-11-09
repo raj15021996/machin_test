@@ -1,8 +1,7 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./dashboard.module.css";
-import Sidebar from "@/components/LayoutComponents/Sidebar/Sidebar";
 import Arrow from "@/assets/Icone/Group 3.svg";
 import Student from "@/assets/Icone/stud.png";
 import Avatar from "@/assets/Icone/avtar.jpg";
@@ -16,25 +15,33 @@ import graphIcon from "@/assets/Icone/Group 16.svg";
 import Slider from "react-slick";
 import moment from "moment";
 
-// Import Slick Carousel CSS
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { useRouter } from "next/navigation";
+import Sidebar from "../HOC/LayoutComponents/Sidebar/Sidebar";
 
 export default function DashboardPage() {
- const [user, setUser] = useState<any>({});
- const router = useRouter();
+  const [user, setUser] = useState<any>({});
+  const [windowWidth, setWindowWidth] = useState(0); // Track window width
 
- useEffect(()=>{
-  let usersString = localStorage.getItem("currentUser");
-  if(!usersString){
-    router.push("/")
-    return
-  }
-  usersString = usersString ? JSON.parse(usersString) : {}
-  setUser(usersString)
- },[])
-console.log(user)
+  useEffect(() => {
+    let usersString = localStorage.getItem("currentUser");
+    usersString = usersString ? JSON.parse(usersString) : {};
+    setUser(usersString);
+  }, []);
+
+  // Track window width
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+
+    // Update width on resize
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const recentCourses = [
     {
       name: "Mobile app Devolvement",
@@ -70,31 +77,53 @@ console.log(user)
   ];
 
   // Updated slider settings
+  // Dynamically determine slides to show based on window width
+  const getSlidesToShow = () => {
+    if (windowWidth === 0) return 1; // Default to 1 during SSR
+    if (windowWidth < 768) return 1;
+    if (windowWidth < 1024) return 2;
+    return 3;
+  };
+
   const settings = {
     dots: true,
-    infinite: enrolledCourses.length > 3,
+    infinite: enrolledCourses.length > getSlidesToShow(),
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: getSlidesToShow(),
     slidesToScroll: 1,
     autoplay: true,
-    arrows: true,
+    arrows: windowWidth >= 768,
+    centerMode: false,
+    variableWidth: false,
+    adaptiveHeight: true,
+    
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-        }
+          infinite: enrolledCourses.length > 2,
+          arrows: true,
+        },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-        }
-      }
-    ]
+          infinite: enrolledCourses.length > 1,
+          arrows: false,
+          dots: true,
+        },
+      },
+    ],
   };
+
+  // Don't render carousel until we know the window width
+  if (windowWidth === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.page}>
@@ -106,7 +135,7 @@ console.log(user)
               <div>
                 <p className={styles.heroDate}>{moment().format('MMMM D, YYYY')}</p>
                 <h1 className={styles.heroTitle}>
-                  <span className={styles.waveEmoji}>👋</span> Welcome back, {user?.fullname ?? "Vipin Jain" }!
+                  <span className={styles.waveEmoji}>👋</span> Welcome back, {user?.fullname ?? ""}!
                 </h1>
                 <p className={styles.heroSubtitle}>
                   Always stay updated in your student portal
@@ -146,7 +175,7 @@ console.log(user)
                   </div>
                   <div>
                     <h2 className={styles.welcomeTitle}>
-                      Welcome Back {user?.fullname ?? "Vipin Jain" }!
+                      Welcome Back {user?.fullname ?? ""}!
                     </h2>
                     <p className={styles.welcomeSubtitle}>
                       Here overview of your course
@@ -160,7 +189,7 @@ console.log(user)
                     <div className={styles.statContent}>
                       <p className={styles.statLabel}>Total Enrolled</p>
                       <div className={styles.statIcon}>
-                        <Image src={EyeIcon} alt="Eye Icon" width={36} height={36}/>
+                        <Image src={EyeIcon} alt="Eye Icon" width={36} height={36} />
                       </div>
                     </div>
                     <p className={styles.statValue}>5000</p>
@@ -168,20 +197,20 @@ console.log(user)
                   <div className={styles.statCard}>
                     <div className={styles.statContent}>
                       <p className={styles.statLabel}>Active Courses</p>
-                       <div className={styles.statIcon}>
-                        <Image src={EyeIcon} alt="Eye Icon" width={36} height={36}/>
+                      <div className={styles.statIcon}>
+                        <Image src={EyeIcon} alt="Eye Icon" width={36} height={36} />
                       </div>
                     </div>
-                      <p className={styles.statValue}>100</p>
+                    <p className={styles.statValue}>100</p>
                   </div>
                   <div className={styles.statCard}>
                     <div className={styles.statContent}>
                       <p className={styles.statLabel}>Completed Courses</p>
-                       <div className={styles.statIcon}>
-                        <Image src={EyeIcon} alt="Eye Icon" width={36} height={36}/>
+                      <div className={styles.statIcon}>
+                        <Image src={EyeIcon} alt="Eye Icon" width={36} height={36} />
                       </div>
                     </div>
-                      <p className={styles.statValue}>20</p>
+                    <p className={styles.statValue}>20</p>
                   </div>
                 </div>
               </div>

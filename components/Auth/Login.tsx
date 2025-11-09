@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
+import { useState, useRef, FormEvent, ChangeEvent } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import styles from "@/app/page.module.css";
@@ -60,16 +60,6 @@ export default function LoginPage() {
     });
   };
 
-  useEffect(() => {
-    let usersString = null;
-    if (typeof window !== "undefined") {
-      usersString = localStorage.getItem("currentUser");
-    }
-    if (usersString) {
-      router.push("/dashboard")
-      return
-    }
-  }, [])
   // Initialize validator
   const validator = useRef(
     new SimpleReactValidator({

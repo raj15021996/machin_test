@@ -1,9 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import Header from "@/components/LayoutComponents/Header/Header"
 import Head from "next/head"
-import Layout from "@/components/LayoutComponents/Layout"
+import Header from "@/components/HOC/LayoutComponents/Header/Header"
+import Layout from "@/components/HOC/LayoutComponents/Layout"
 
 
 export const metadata: Metadata = {

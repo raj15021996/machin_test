@@ -60,17 +60,6 @@ export default function SignUpPage() {
     });
   };
 
-  useEffect(() => {
-    let usersString = null;
-    if (typeof window !== "undefined") {
-      usersString = localStorage.getItem("currentUser");
-    }
-    if (usersString) {
-      router.push("/dashboard")
-      return
-    }
-  }, [])
-
   // Initialize validator
   const validator = useRef(
     new SimpleReactValidator({
