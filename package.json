@@ -16,7 +16,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-slick": "^0.31.0",
-    "react-toastella": "^1.1.4",
+    "react-toastella": "^1.1.6",
     "simple-react-validator": "^1.6.2",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.5.5",

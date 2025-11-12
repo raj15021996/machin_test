@@ -37,10 +37,10 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [, forceUpdate] = useState<number>(0);
   const router = useRouter();
-  const { addToast } = useToaster();
+  const { notify } = useToaster();
 
   const showNotification = (message: string, types: ToastType, gradient?: any) => {
-    addToast({
+    notify({
       message: message,
       type: types,
       animation: "slide",

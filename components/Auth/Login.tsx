@@ -37,10 +37,10 @@ export default function LoginPage() {
   const [, forceUpdate] = useState<number>(0);
   const [loginError, setLoginError] = useState<string>("");
 
-  const { addToast } = useToaster();
+  const { notify } = useToaster();
 
-  const showNotification = (message: string, types: ToastType, gradient?: any) => {
-    addToast({
+  const showNotification = (message: string, types: ToastType, gradient?: any, color? :string) => {
+    notify({
       message: message,
       type: types,
       animation: "slide",
@@ -54,8 +54,8 @@ export default function LoginPage() {
         padding: "16px",
         border: "1px solid rgba(255, 255, 255, 0.1)",
         iconColor: "#fff",
-        textColor: "#fff",
-         fontWeight: "bold" ,
+        textColor: color,
+        fontWeight: "bold" ,
       },
     });
   };
@@ -97,7 +97,7 @@ export default function LoginPage() {
       }
       return usersString ? JSON.parse(usersString) : [];
     } catch (error) {
-      showNotification("Error reading users from localStorage", "error", [" #f00a0aff", "#F8FFAE"]);
+      showNotification("Error reading users from localStorage", "error", [" #f00a0aff", "#F8FFAE"],'#fff');
       console.error("Error reading users from localStorage:", error);
       return [];
     }
@@ -136,7 +136,7 @@ export default function LoginPage() {
       if (user) {
         // Login successful
         setCurrentUser(user);
-        showNotification(`Welcome back, ${user.fullname}!`, "success", [" #00ff00ff", "#F8FFAE"]);
+        showNotification(`Welcome back, ${user.fullname}!`, "success", [" #00ff00ff", "#F8FFAE"], '#1d1616ff');
 
         // Reset form
         setFormData({
@@ -150,9 +150,8 @@ export default function LoginPage() {
         // Redirect to dashboard
         router.push("/dashboard");
       } else {
-        debugger
         // Login failed
-        showNotification("Invalid email or password. Please try again.", "error", [" #f00a0aff", "#F8FFAE"]);
+        showNotification("Invalid email or password. Please try again.", "error", [" #f00a0aff", "#F8FFAE"], '#fff');
         setLoginError("Invalid email or password. Please try again.");
       }
     } else {
